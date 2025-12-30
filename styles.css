@@ -1,0 +1,811 @@
+/* ===================================
+   CSS CUSTOM PROPERTIES & DESIGN SYSTEM
+   =================================== */
+:root {
+    /* Color Palette */
+    --color-primary: #8b5cf6;
+    --color-primary-dark: #7c3aed;
+    --color-secondary: #14b8a6;
+    --color-accent: #f59e0b;
+    --color-pink: #ec4899;
+    --color-blue: #3b82f6;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-warm: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --gradient-cool: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --gradient-reveal: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+
+    /* Background Colors */
+    --bg-dark: #0f0f23;
+    --bg-card: rgba(255, 255, 255, 0.05);
+    --bg-card-hover: rgba(255, 255, 255, 0.1);
+
+    /* Text Colors */
+    --text-primary: #ffffff;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    --spacing-2xl: 4rem;
+
+    /* Border Radius */
+    --radius-sm: 0.5rem;
+    --radius-md: 1rem;
+    --radius-lg: 1.5rem;
+
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --shadow-glow: 0 0 20px rgba(139, 92, 246, 0.5);
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+
+    /* Typography */
+    --font-heading: 'Fredoka', sans-serif;
+    --font-body: 'Quicksand', sans-serif;
+}
+
+/* ===================================
+   RESET & BASE STYLES
+   =================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(20, 184, 166, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(236, 72, 153, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+/* ===================================
+   UTILITY CLASSES
+   =================================== */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+    position: relative;
+    z-index: 1;
+}
+
+/* ===================================
+   SOUND TOGGLE
+   =================================== */
+.sound-toggle {
+    position: fixed;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sound-toggle:hover {
+    background: var(--bg-card-hover);
+    transform: scale(1.1);
+    box-shadow: var(--shadow-glow);
+}
+
+.sound-toggle.muted .sound-icon::after {
+    content: '🔇';
+    position: absolute;
+}
+
+.sound-toggle.muted .sound-icon {
+    opacity: 0;
+}
+
+/* ===================================
+   PROGRESS BAR
+   =================================== */
+.progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 999;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--gradient-primary);
+    transition: width var(--transition-slow);
+}
+
+/* ===================================
+   STAGE MANAGEMENT
+   =================================== */
+.stage {
+    min-height: 100vh;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-xl) 0;
+    position: relative;
+}
+
+.stage.active {
+    display: flex;
+    animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===================================
+   STAGE 1: WELCOME
+   =================================== */
+.welcome-content {
+    text-align: center;
+    position: relative;
+}
+
+.stars-bg {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: pulse 3s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: translateX(-50%) scale(1);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: translateX(-50%) scale(1.2);
+        opacity: 0.8;
+    }
+}
+
+.curved-text-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto var(--spacing-sm);
+    position: relative;
+    z-index: 10;
+}
+
+.curved-svg {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.6));
+}
+
+.curved-text {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 700;
+    fill: url(#curvedGradient);
+    letter-spacing: 1px;
+    animation: curvedGlow 3s ease-in-out infinite;
+}
+
+@keyframes curvedGlow {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.8));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 25px rgba(236, 72, 153, 1));
+    }
+}
+
+.glowing-title {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--spacing-sm);
+    animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.5));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.8));
+    }
+}
+
+.subtitle {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xl);
+}
+
+.mystery-box {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    margin: var(--spacing-xl) auto;
+    max-width: 500px;
+    box-shadow: var(--shadow-lg);
+}
+
+.mystery-icon {
+    font-size: 4rem;
+    margin-bottom: var(--spacing-md);
+    animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.mystery-text {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+}
+
+/* ===================================
+   BUTTONS
+   =================================== */
+.btn-primary,
+.hint-btn {
+    position: relative;
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: var(--font-heading);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    overflow: hidden;
+    margin-top: var(--spacing-md);
+}
+
+.btn-primary {
+    background: var(--gradient-primary);
+    color: white;
+    box-shadow: var(--shadow-md);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+}
+
+.btn-primary.pulse {
+    animation: pulseButton 2s ease-in-out infinite;
+}
+
+@keyframes pulseButton {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.btn-glow {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.btn-primary:hover .btn-glow {
+    left: 100%;
+}
+
+.hint-btn {
+    background: transparent;
+    border: 2px solid var(--color-accent);
+    color: var(--color-accent);
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+}
+
+.hint-btn:hover {
+    background: var(--color-accent);
+    color: white;
+}
+
+/* ===================================
+   STAGE TITLES
+   =================================== */
+.stage-title {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    text-align: center;
+    background: var(--gradient-cool);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+}
+
+.stage-subtitle {
+    text-align: center;
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-md);
+}
+
+/* ===================================
+   STAGE 2: PUZZLE
+   =================================== */
+.puzzle-container {
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: 0.5rem;
+}
+
+#stage2.active {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-sm) 0;
+}
+
+#stage2 .container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: 0 1rem;
+}
+
+.puzzle-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xs);
+    width: 300px;
+    aspect-ratio: 1;
+    flex-shrink: 0;
+}
+
+.puzzle-slot {
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-sm);
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    aspect-ratio: 1;
+}
+
+.puzzle-slot.filled {
+    border-style: solid;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+}
+
+.puzzle-slot.highlight {
+    background: rgba(139, 92, 246, 0.2);
+    border-color: var(--color-primary);
+}
+
+.puzzle-pieces {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-xs);
+    width: 260px;
+}
+
+.puzzle-piece {
+    aspect-ratio: 1;
+    background-size: 300% 300%;
+    background-position: center;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--radius-sm);
+    cursor: grab;
+    transition: all var(--transition-normal);
+    position: relative;
+}
+
+.puzzle-piece:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-glow);
+    z-index: 10;
+}
+
+.puzzle-piece:active {
+    cursor: grabbing;
+}
+
+.puzzle-piece.placed {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.hint-box {
+    text-align: center;
+    margin: var(--spacing-sm) 0;
+}
+
+.hint-text {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    animation: slideDown 0.3s ease;
+    max-width: 500px;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-10px);
+    }
+
+    75% {
+        transform: translateX(10px);
+    }
+}
+
+/* ===================================
+   STAGE 3: FINAL REVEAL
+   =================================== */
+.countdown {
+    text-align: center;
+}
+
+.countdown-number {
+    font-size: clamp(8rem, 20vw, 15rem);
+    font-weight: 700;
+    font-family: var(--font-heading);
+    background: var(--gradient-reveal);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: countdownPulse 1s ease-in-out;
+}
+
+@keyframes countdownPulse {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.reveal-content {
+    text-align: center;
+    position: relative;
+}
+
+.confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: var(--color-primary);
+    animation: confettiFall 3s linear forwards;
+}
+
+@keyframes confettiFall {
+    to {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+.reveal-title {
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    margin-bottom: var(--spacing-md);
+    background: var(--gradient-cool);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.reveal-subtitle {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    margin-bottom: var(--spacing-xl);
+    background: var(--gradient-warm);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.tamil-message {
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 700;
+    font-family: var(--font-heading);
+    background: var(--gradient-reveal);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    padding: var(--spacing-xl);
+    margin: var(--spacing-xl) 0;
+    position: relative;
+    animation: gradientShift 3s ease infinite;
+    background-size: 200% 200%;
+}
+
+@keyframes gradientShift {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.ultrasound-reveal {
+    max-width: 500px;
+    margin: var(--spacing-xl) auto;
+    padding: var(--spacing-md);
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg), 0 0 40px rgba(139, 92, 246, 0.3);
+}
+
+.ultrasound-img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+    animation: zoomIn 1s ease;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.heartfelt-message {
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: var(--text-secondary);
+    margin-top: var(--spacing-xl);
+    line-height: 1.8;
+}
+
+.heartfelt-message p {
+    margin: var(--spacing-sm) 0;
+}
+
+.animate-in {
+    animation: fadeInUp 0.8s ease forwards;
+    opacity: 0;
+}
+
+.animate-in:nth-child(1) {
+    animation-delay: 0.2s;
+}
+
+.animate-in:nth-child(2) {
+    animation-delay: 0.4s;
+}
+
+.animate-in:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+.animate-in:nth-child(4) {
+    animation-delay: 0.8s;
+}
+
+.animate-in:nth-child(5) {
+    animation-delay: 1s;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===================================
+   RESPONSIVE DESIGN
+   =================================== */
+@media (max-width: 768px) {
+    .container {
+        padding: var(--spacing-sm);
+    }
+
+    .curved-text {
+        font-size: 1.8rem;
+    }
+
+    .glowing-title {
+        font-size: 2.2rem;
+    }
+
+    .puzzle-container {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-md);
+        padding: var(--spacing-sm);
+    }
+
+    .puzzle-grid {
+        width: min(300px, 90vw);
+    }
+
+    .puzzle-pieces {
+        width: min(280px, 85vw);
+        gap: 4px;
+    }
+
+    #stage2 {
+        overflow-y: auto;
+        height: auto;
+        min-height: 100vh;
+        padding-bottom: 2rem;
+    }
+
+    .reveal-title {
+        font-size: 2.5rem;
+    }
+
+    .reveal-subtitle {
+        font-size: 2rem;
+    }
+
+    .tamil-message {
+        font-size: 1.8rem;
+        padding: var(--spacing-md);
+    }
+}
