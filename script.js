@@ -621,3 +621,137 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+
+// ========================================
+// FIREWORKS ANIMATION
+// ========================================
+class Firework {
+    constructor(canvas, x, y) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.x = x;
+        this.y = y;
+        this.particles = [];
+        this.hue = Math.random() * 360;
+
+        this.explode();
+    }
+
+    explode() {
+        const particleCount = 50 + Math.random() * 50;
+        for (let i = 0; i < particleCount; i++) {
+            this.particles.push(new Particle(this.ctx, this.x, this.y, this.hue));
+        }
+    }
+
+    update() {
+        this.particles = this.particles.filter(particle => particle.alpha > 0);
+        this.particles.forEach(particle => particle.update());
+    }
+
+    draw() {
+        this.particles.forEach(particle => particle.draw());
+    }
+
+    isDead() {
+        return this.particles.length === 0;
+    }
+}
+
+class Particle {
+    constructor(ctx, x, y, hue) {
+        this.ctx = ctx;
+        this.x = x;
+        this.y = y;
+        this.hue = hue;
+        this.angle = Math.random() * Math.PI * 2;
+        this.speed = 2 + Math.random() * 5;
+        this.vx = Math.cos(this.angle) * this.speed;
+        this.vy = Math.sin(this.angle) * this.speed;
+        this.alpha = 1;
+        this.decay = 0.015 + Math.random() * 0.015;
+        this.size = 2 + Math.random() * 2;
+        this.brightness = 50 + Math.random() * 50;
+    }
+
+    update() {
+        this.vx *= 0.98;
+        this.vy *= 0.98;
+        this.vy += 0.1; // gravity
+        this.x += this.vx;
+        this.y += this.vy;
+        this.alpha -= this.decay;
+    }
+
+    draw() {
+        this.ctx.save();
+        this.ctx.globalAlpha = this.alpha;
+        this.ctx.fillStyle = `hsl(${this.hue}, 100%, ${this.brightness}%)`;
+        this.ctx.beginPath();
+        this.ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.restore();
+    }
+}
+
+function initFireworks() {
+    const canvas = document.getElementById('fireworksCanvas');
+    if (!canvas) return;
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const ctx = canvas.getContext('2d');
+
+    const fireworks = [];
+    let animationId;
+
+    function animate() {
+        // Use transparent background so content shows through
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Add new fireworks randomly
+        if (Math.random() < 0.1) {
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * canvas.height * 0.5;
+            fireworks.push(new Firework(canvas, x, y));
+        }
+
+        // Update and draw fireworks
+        for (let i = fireworks.length - 1; i >= 0; i--) {
+            fireworks[i].update();
+            fireworks[i].draw();
+
+            if (fireworks[i].isDead()) {
+                fireworks.splice(i, 1);
+            }
+        }
+
+        animationId = requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    // Stop after 30 seconds
+    setTimeout(() => {
+        cancelAnimationFrame(animationId);
+        canvas.style.display = 'none';
+    }, 30000);
+
+    // Handle resize
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+}
+
+// Start fireworks when reveal content is shown
+const originalStartCountdown = startCountdown;
+startCountdown = function () {
+    originalStartCountdown.call(this);
+
+    // Start fireworks after countdown
+    setTimeout(() => {
+        initFireworks();
+    }, 4000); // Start fireworks 4 seconds after reveal
+};
+
