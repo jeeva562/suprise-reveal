@@ -70,10 +70,23 @@
                     <p class="mystery-text">Something magical is about to be revealed</p>
                 </div>
 
-                <button class="btn-primary pulse" onclick="nextStage(2)">
-                    Begin the Challenge
-                    <span class="btn-glow"></span>
-                </button>
+                <p class="gender-prompt">First, tell us about yourself:</p>
+
+                <div class="gender-selection-container">
+                    <div class="gender-card" data-gender="male" onclick="selectGender('male')">
+                        <div class="gender-icon">👨</div>
+                        <h3 class="gender-title">I'm a Guy</h3>
+                        <p class="gender-subtitle">Click to continue</p>
+                        <div class="card-glow"></div>
+                    </div>
+
+                    <div class="gender-card" data-gender="female" onclick="selectGender('female')">
+                        <div class="gender-icon">👩</div>
+                        <h3 class="gender-title">I'm a Girl</h3>
+                        <p class="gender-subtitle">Click to continue</p>
+                        <div class="card-glow"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -117,11 +130,11 @@
             <div class="reveal-content" id="revealContent" style="display: none;">
                 <div class="confetti-container" id="confettiContainer"></div>
 
-                <h1 class="reveal-title animate-in">Raasa!</h1>
+                <h1 class="reveal-title animate-in"><span id="revealGreeting">Raasa!</span></h1>
                 <h2 class="reveal-subtitle animate-in">We're Expecting!</h2>
 
                 <div class="tamil-message animate-in">
-                    Deii Ne Mama va aaita da
+                    <span id="revealMessage">Deii Ne Mama va aaita da</span>
                 </div>
 
                 <div class="ultrasound-reveal animate-in">

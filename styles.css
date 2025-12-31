@@ -811,6 +811,126 @@ h6 {
 }
 
 /* ===================================
+   GENDER SELECTION
+   =================================== */
+.gender-prompt {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    color: var(--text-secondary);
+    margin: 2rem 0 1.5rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.gender-selection-container {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: stretch;
+    margin: 2rem auto;
+    max-width: 800px;
+    flex-wrap: wrap;
+}
+
+.gender-card {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+    max-width: 300px;
+    padding: 3rem 2rem;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-lg);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.gender-card[data-gender="male"] {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.gender-card[data-gender="female"] {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.gender-card:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow:
+        var(--shadow-lg),
+        0 0 40px rgba(139, 92, 246, 0.6);
+}
+
+.gender-card[data-gender="female"]:hover {
+    box-shadow:
+        var(--shadow-lg),
+        0 0 40px rgba(250, 112, 154, 0.6);
+}
+
+.gender-icon {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+.gender-title {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 800;
+    color: white;
+    margin-bottom: 0.5rem;
+    font-family: var(--font-heading);
+}
+
+.gender-subtitle {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+}
+
+.card-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.gender-card:hover .card-glow {
+    opacity: 1;
+}
+
+.gender-card:active {
+    transform: translateY(-5px) scale(1.02);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .gender-selection-container {
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 0 1rem;
+    }
+
+    .gender-card {
+        max-width: 100%;
+        min-width: 280px;
+        padding: 2.5rem 1.5rem;
+    }
+
+    .gender-icon {
+        font-size: 4rem;
+    }
+}
+
+/* ===================================
    NEW YEAR MESSAGE & FIREWORKS
    =================================== */
 .animate-in {

@@ -345,6 +345,29 @@ function showHint() {
 }
 
 // ===================================
+// GENDER SELECTION
+// ===================================
+function selectGender(gender) {
+    // Store selection in sessionStorage
+    sessionStorage.setItem('userGender', gender);
+
+    // Play sound and visual feedback
+    sounds.success();
+
+    // Add selected animation to clicked card
+    const selectedCard = document.querySelector(`.gender-card[data-gender="${gender}"]`);
+    if (selectedCard) {
+        selectedCard.style.transform = 'scale(1.1)';
+        selectedCard.style.boxShadow = '0 0 60px rgba(139, 92, 246, 0.9)';
+    }
+
+    // Transition to next stage after brief delay
+    setTimeout(() => {
+        nextStage(2);
+    }, 500);
+}
+
+// ===================================
 // STAGE 3: FINAL REVEAL
 // ===================================
 function startCountdown() {
@@ -352,6 +375,10 @@ function startCountdown() {
     const revealContent = document.getElementById('revealContent');
 
     if (!countdownEl || !revealContent) return;
+
+    // Get gender selection and update messages
+    const userGender = sessionStorage.getItem('userGender');
+    updateRevealMessages(userGender);
 
     let count = 2; // Start from 2 because 3 is already visible in HTML
 
@@ -398,6 +425,25 @@ function createConfetti() {
 
             setTimeout(() => confetti.remove(), 3000);
         }, i * 30);
+    }
+}
+
+function updateRevealMessages(gender) {
+    const greetingEl = document.getElementById('revealGreeting');
+    const messageEl = document.getElementById('revealMessage');
+
+    if (!greetingEl || !messageEl) return;
+
+    if (gender === 'male') {
+        greetingEl.textContent = 'Raasa!';
+        messageEl.textContent = 'Eley Ne Mama Va aaita dey';
+    } else if (gender === 'female') {
+        greetingEl.textContent = 'Raasathi!';
+        messageEl.textContent = 'Ne Aththai uh aaita pa';
+    } else {
+        // Fallback to default
+        greetingEl.textContent = 'Friends!';
+        messageEl.textContent = 'Deii Ne Mama va aaita da';
     }
 }
 
